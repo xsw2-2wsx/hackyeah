@@ -1,5 +1,6 @@
-package com.xsw22wsx.hackyeah.instructions
+package com.xsw22wsx.hackyeah.users
 
 data class User(
-    val email: String,
+    var id: Int,
+    var email: String,
 )
