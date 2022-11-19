@@ -20,9 +20,25 @@ class InMemoryInstructionRepository : InstructionRepository {
         instructions.add(newInstruction)
     }
 
-    override suspend fun findInstructions(limit: Int, offset: Int): List<Instruction> = instructions
-        .drop(offset)
-        .take(limit)
+    override suspend fun findInstructions(
+        limit: Int,
+        offset: Int,
+        tags: List<String>?,
+        category: List<Instruction.Category>?
+    ): List<Instruction>  {
+        var instructions: List<Instruction> = instructions.toList()
+
+        if(!category.isNullOrEmpty()) instructions = instructions.filter { it.category in category }
+
+        if(tags != null)  instructions = instructions.sortedWith { i1, i2 ->
+            tags.count { i2.tags.contains(it) } - tags.count { i1.tags.contains(it) }
+        }
+
+        return instructions
+            .drop(offset)
+            .take(limit)
+    }
+
 
     override suspend fun findAllInstructions(): List<Instruction> = LinkedList(instructions)
 

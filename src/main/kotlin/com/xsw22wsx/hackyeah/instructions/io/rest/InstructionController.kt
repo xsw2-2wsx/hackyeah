@@ -20,8 +20,16 @@ class InstructionController(
     suspend fun getInstructions(
         @RequestParam("page") page: Int,
         @RequestParam("count") count: Int,
-    ) =
-        instructionService.getInstructions(page, count)
+        @RequestParam("tags", required = false) tagsParam: String?,
+        @RequestParam("category", required = false) categoryParam: String?,
+
+    ): List<Instruction> {
+        val tags = tagsParam?.split(",")
+        val category = categoryParam?.split(",")?.map { Instruction.Category.valueOf(it) }
+
+        return instructionService.getInstructions(page, count, tags, category)
+    }
+
 
     @GetMapping("/{id}")
     suspend fun getInstructionById(

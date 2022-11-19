@@ -11,8 +11,8 @@ class InstructionService(
         instructionRepository.saveInstruction(instruction)
     }
 
-    suspend fun getInstructions(page: Int, count: Int) =
-        instructionRepository.findInstructions(count, count * page)
+    suspend fun getInstructions(page: Int, count: Int, tags: List<String>?, category: List<Instruction.Category>?) =
+        instructionRepository.findInstructions(count, count * page, tags, category)
 
     suspend fun getInstructionById(id: Int): Instruction? = instructionRepository.findInstruction(id)
 

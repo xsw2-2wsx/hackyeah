@@ -4,7 +4,7 @@ interface InstructionRepository {
 
     suspend fun saveInstruction(newInstruction: Instruction)
 
-    suspend fun findInstructions(limit: Int, offset: Int): List<Instruction>
+    suspend fun findInstructions(limit: Int, offset: Int, tags: List<String>?, category: List<Instruction.Category>?): List<Instruction>
 
     suspend fun findInstruction(id: Int): Instruction?
 
