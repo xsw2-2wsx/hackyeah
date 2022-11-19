@@ -12,7 +12,7 @@ class InstructionController(
 ) {
 
     @PostMapping
-    suspend fun createInstruction(@RequestBody(required = true) instruction: Instruction) {
+    suspend fun createInstruction(@RequestBody instruction: Instruction) {
         instructionService.saveInstruction(instruction)
     }
 

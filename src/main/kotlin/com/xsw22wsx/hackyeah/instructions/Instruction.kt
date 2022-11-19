@@ -8,7 +8,6 @@ data class Instruction(
     var tags: MutableList<String>,
     var content: String,
     var images: List<String>,
-
     ) {
     enum class Category {
         DIY
