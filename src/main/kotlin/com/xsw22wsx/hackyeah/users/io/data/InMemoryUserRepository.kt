@@ -20,4 +20,6 @@ class InMemoryUserRepository : UserRepository {
         user.id = generateUserId()
         users.add(user)
     }
+
+    override suspend fun getUserById(id: Int): User? = users.firstOrNull { it.id == id }
 }

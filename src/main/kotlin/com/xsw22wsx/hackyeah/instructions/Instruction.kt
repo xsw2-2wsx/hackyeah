@@ -6,6 +6,8 @@ data class Instruction(
     var category: Category,
     var title: String,
     var tags: MutableList<String>,
+    var additionalMaterials: MutableList<String>,
+    var steps: MutableList<String>,
     var content: String,
     var images: List<String>,
     ) {

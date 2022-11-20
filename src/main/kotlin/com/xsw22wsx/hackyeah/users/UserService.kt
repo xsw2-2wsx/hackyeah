@@ -9,4 +9,6 @@ class UserService(
 ) {
 
     suspend fun addUser(user: User) = userRepository.saveUser(user)
+    suspend fun getUserById(id: Int): User? =
+        userRepository.getUserById(id)
 }
