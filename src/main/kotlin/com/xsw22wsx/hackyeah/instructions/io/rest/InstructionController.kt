@@ -2,6 +2,8 @@ package com.xsw22wsx.hackyeah.instructions.io.rest
 
 import com.xsw22wsx.hackyeah.instructions.Instruction
 import com.xsw22wsx.hackyeah.instructions.InstructionService
+import com.xsw22wsx.hackyeah.utils.PagedResponse
+import com.xsw22wsx.hackyeah.utils.paged
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -22,12 +24,15 @@ class InstructionController(
         @RequestParam("count") count: Int,
         @RequestParam("tags", required = false) tagsParam: String?,
         @RequestParam("category", required = false) categoryParam: String?,
+        @RequestParam("q", required = false) query: String?,
 
-    ): List<Instruction> {
+
+    ): PagedResponse<Instruction> {
         val tags = tagsParam?.split(",")
         val category = categoryParam?.split(",")?.map { Instruction.Category.valueOf(it) }
 
-        return instructionService.getInstructions(page, count, tags, category)
+        return instructionService.getInstructions(page, count, tags, category, query)
+            .paged(instructionService.getInstructionCount(tags, category, query))
     }
 
 

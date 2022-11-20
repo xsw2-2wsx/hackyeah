@@ -20,25 +20,44 @@ class InMemoryInstructionRepository : InstructionRepository {
         instructions.add(newInstruction)
     }
 
-    override suspend fun findInstructions(
+    override suspend fun findInstructionsPaged(
         limit: Int,
         offset: Int,
         tags: List<String>?,
-        category: List<Instruction.Category>?
+        category: List<Instruction.Category>?,
+        query: String?,
     ): List<Instruction>  {
-        var instructions: List<Instruction> = instructions.toList()
-
-        if(!category.isNullOrEmpty()) instructions = instructions.filter { it.category in category }
-
-        if(tags != null)  instructions = instructions.sortedWith { i1, i2 ->
-            tags.count { i2.tags.contains(it) } - tags.count { i1.tags.contains(it) }
-        }
+        val instructions: List<Instruction> = findInstructions(category, tags, query)
 
         return instructions
             .drop(offset)
             .take(limit)
     }
 
+    private fun findInstructions(
+        category: List<Instruction.Category>?,
+        tags: List<String>?,
+        query: String?
+    ): List<Instruction> {
+        var instructions: List<Instruction> = instructions.toList()
+
+        if (!category.isNullOrEmpty()) instructions = instructions.filter { it.category in category }
+
+        if (tags != null) instructions = instructions.sortedWith { i1, i2 ->
+            tags.count { i2.tags.contains(it) } - tags.count { i1.tags.contains(it) }
+        }
+
+        if (query != null) instructions = instructions.filter {
+            it.content.contains(query, true) || it.title.contains(query, true)
+        }
+        return instructions
+    }
+
+    override suspend fun getInstructionCount(
+        tags: List<String>?,
+        category: List<Instruction.Category>?,
+        query: String?
+    ): Int = findInstructions(category, tags, query).size
 
     override suspend fun findAllInstructions(): List<Instruction> = LinkedList(instructions)
 
