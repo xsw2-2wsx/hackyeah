@@ -4,4 +4,5 @@ data class Rating(
     val userId: Int,
     val instructionId: Int,
     val rating: Int,
+    val comment: String,
 )

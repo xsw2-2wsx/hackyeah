@@ -20,7 +20,7 @@ class RatingController(
         @RequestBody rm: RatingModel,
         @PathVariable("instructionId") instructionId: Int,
     ) =
-        ratingService.addRating(Rating(rm.userId, instructionId, rm.rating))
+        ratingService.addRating(Rating(rm.userId, instructionId, rm.rating, rm.comment))
 
     @GetMapping
     suspend fun getRatings(
